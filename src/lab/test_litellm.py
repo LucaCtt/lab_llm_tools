@@ -30,14 +30,17 @@ def main():
         extra_body={ # Please disable thinking to get responses in a reasonable time frame
             "chat_template_kwargs": {"enable_thinking": False}
         },  
-        stream=True,
+        stream=settings.stream
     )
-    for chunk in response:  # type: ignore[union-attr]
-        if isinstance(chunk, litellm.ModelResponseStream): # This is to make the type checker happy
-            print(chunk.choices[0].delta.content or "", end="", flush=True)
 
-    print()
+    # If streaming is disabled, the response will be a ModelResponse object. 
+    if isinstance(response, litellm.ModelResponse):
+        print(response.choices[0].message.content)
+        return
 
+    # If streaming is enabled, it will be an iterator of ModelResponse objects.
+    for chunk in response:
+        print(chunk.choices[0].delta.content or "", end="", flush=True)
 
 if __name__ == "__main__":
     main()

@@ -8,6 +8,7 @@ dependencies = [
     "litellm>=1.83.0",
     "pydantic-settings>=2.13.1",
     "rdflib>=7.6.0",
+    "streamlit>=1.56.0",
 ]
 
 [build-system]
