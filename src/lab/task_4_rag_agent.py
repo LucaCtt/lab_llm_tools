@@ -13,10 +13,9 @@ The model will:
 You can refere to example_2_function_calls.py for a template on how to implement tool calling with litellm.
 
 Instructions
-------------
-1. Complete the three tool wrapper functions.
-2. Complete run_agent() following the pattern in example_2_function_calls.py.
-3. Test with at least three questions and observe which tool(s) the model picks.
+---
+1. Complete run_agent() following the pattern in example_2_function_calls.py.
+2. Test with at least three questions and observe which tool(s) the model picks.
 
 """
 

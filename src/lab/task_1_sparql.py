@@ -5,11 +5,11 @@ Goal: build a minimal pipeline where the LLM generates a SPARQL query,
 your code executes it on Wikidata, and the LLM answers using the results.
 
 Pipeline:
-    question -> generate_sparql() -> query_wikidata() -> verbalize() -> answer()
+question -> generate_sparql() -> query_wikidata() -> verbalize() -> answer()
 
 Instructions
-------------
-1. Choose a narrow topic (e.g. programming languages, F1, etc.).
+---
+1. Choose a narrow topic (e.g. programming languages, Formula 1, etc.).
    All your test questions should belong to that topic.
 2. Complete the five TODO functions below.
 3. Test with at least three different questions and print all intermediate steps.
