@@ -21,8 +21,35 @@ as you will use these functions as tools in the next task.
 
 """
 
+import math
+
 from rdflib import Graph
+from sentence_transformers import SentenceTransformer
+
 from lab.task_1_sparql import answer  # reusing answer() from Task 1
+
+
+def _cosine_similarity(a: list[float], b: list[float]) -> float:
+    """Compute cosine similarity between two vectors."""
+    dot = sum(x * y for x, y in zip(a, b))
+    norm_a = math.sqrt(sum(x * x for x in a))
+    norm_b = math.sqrt(sum(x * x for x in b))
+    if norm_a == 0 or norm_b == 0:
+        return 0.0
+    return dot / (norm_a * norm_b)
+
+
+def _get_embedding(text: str) -> list[float]:
+    """Get an embedding vector for a text string via LiteLLM.
+
+    Falls back to a zero-vector on failure (e.g. if the proxy has no embedding model).
+    """
+    embeddings_model = SentenceTransformer(
+        "all-MiniLM-L6-v2"
+    )  # or any other model you prefer
+
+    embeddings = embeddings_model.encode([text], show_progress_bar=False)
+    return embeddings[0].tolist()
 
 
 def retrieve_sparql(graph: Graph, query: str) -> str: ...  # TODO
