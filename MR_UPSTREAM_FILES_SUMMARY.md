@@ -33,9 +33,6 @@ The sections below summarize the file-by-file changes that remain in scope for r
 - Adds a `litellm_model` property that returns the configured model unchanged if it already contains a provider prefix, otherwise prefixes it as `openai/<model>`.
 
 ## `src/lab/task_1_sparql.py`
-hange is to separate human-friendly model configuration from the exact model string required by LiteLLM callers.
-
-## `src/lab/task_1_sparql.py`
 
 - Replaces the placeholder assignment skeleton with a complete Formula 1 question-answering pipeline.
 - Configures LiteLLM using the shared settings object and fails fast if `LITELLM_API_KEY` is missing.
@@ -44,7 +41,7 @@ hange is to separate human-friendly model configuration from the exact model str
 - Adds response-cleaning helpers so LLM-generated SPARQL can be stripped of markdown fences or leading prose before execution.
 - Adds question analysis helpers that detect named drivers and match known terms, allowing simple questions to be routed to handcrafted queries instead of relying entirely on model generation.
 - Adds heuristics to validate whether a generated SPARQL query looks plausible for the intended Formula 1 domain.
-- Adds support for loading a - In effect, this file moves from an empty teaching scaffold to a complete SPARQL-based RAG exercise specialized for a small Formula 1 dataset.
+- Adds support for loading a locally exported RDF graph through `example_3_wikidata.py`, which gives the task an offline grounding path in addition to live Wikidata access.
 
 ## `src/lab/task_2_hybrid_retrieval.py`
 
@@ -54,8 +51,8 @@ hange is to separate human-friendly model configuration from the exact model str
 - Builds structured driver records from RDF triples and converts them into readable sentences used by both text and embedding retrieval.
 - Implements local SPARQL generation against the exported graph using `rdfs:label` and the custom `lab:` namespace, with dynamic filters derived from question terms.
 - Implements text retrieval as a simple scored keyword match over normalized driver summaries.
-- Implements embedding retrieval with `sentence-transformers`, caches the model with `lru_cache`, and degrades gracefully back to text retrieval when embe tested side by side.
-- Overall, this file turns the local RDF graph into a comparison harness for structured, lexical, and semantic retrieval.
+- Implements embedding retrieval with `sentence-transformers`, caches the model with `lru_cache`, and degrades gracefully back to text retrieval when embeddings are unavailable.
+- Re-enables the embedding comparison path in `compare()` so all three retrieval strategies can be tested side by side.
 
 ## `src/lab/task_3_rag_agent.py`
 
@@ -66,5 +63,4 @@ hange is to separate human-friendly model configuration from the exact model str
 - Adds a system prompt that forces retrieval-before-answering behavior and biases direct fact questions toward SPARQL retrieval first.
 - Implements an iterative tool-calling loop that sends the conversation to LiteLLM, executes requested tools, appends tool results back into the message history, and continues until the model stops requesting tools.
 - Adds a fallback path that manually invokes a retrieval tool if the model tries to answer without calling one first.
-- Combines all retrieved context and routes the final response through `task_1_sparql.answer()` so the answer stays grounde
-- In practice, this file upgrades the lab from independent retrieval demos into an agent that can choose among retrieval methods per question.
+- Combines all retrieved context and routes the final response through `task_1_sparql.answer()` so the answer stays grounded in retrieved evidence.
